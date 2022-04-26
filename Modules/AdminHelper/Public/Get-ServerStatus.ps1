@@ -13,7 +13,7 @@ function Get-ServerStatus {
         Allows you to specify a volume letter to gather disk usage metrics from. Default is C
 
     .PARAMETER maxConnections
-        Specifies how many simultaneous connections are allowed to be open at one time. Default value is 10.
+        Specifies how many simultaneous connections are allowed to be open at one time. Default value is 10. Maximum value is 20.
 
     .EXAMPLE
         Get-ServerStatus.ps1 -servers ('server1','server2','server3') -volumeLetter "D" -maxConnections 2
@@ -25,9 +25,11 @@ function Get-ServerStatus {
         [array]
         $computerName,
 
+        [ValidatePattern("^[A-Za-z]$")]
         [string]
         $volumeLetter = 'C',
 
+        [ValidateRange(1,20)]
         [int]
         $maxConnections = 10,
 
@@ -41,6 +43,8 @@ function Get-ServerStatus {
         $sb = {
             [OutputType([psobject])]
             param(
+                [ValidatePattern("^[A-Za-z]$")]
+                [string]
                 $volLetter
             )
             process {
@@ -73,7 +77,6 @@ function Get-ServerStatus {
         $computerName | ForEach-Object {[void](Invoke-Command -ScriptBlock $sb -ArgumentList $volumeLetter -ComputerName $_ -Credential $credential -AsJob -ThrottleLimit $maxConnections)}
         while (get-job -State 'Running') {
             write-progress -Activity 'Waiting for jobs to complete' -PercentComplete (((Get-job -State 'Completed').count / $computerName.count)*100)
-            start-sleep 2
         }
         Get-Job | Receive-Job -Wait -AutoRemoveJob
     }

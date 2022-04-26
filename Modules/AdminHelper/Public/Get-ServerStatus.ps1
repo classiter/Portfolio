@@ -19,6 +19,7 @@ function Get-ServerStatus {
         Get-ServerStatus.ps1 -servers ('server1','server2','server3') -volumeLetter "D" -maxConnections 2
     #>
     [CmdletBinding()]
+    [OutputType([psobject])]
     param (
         [parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [array]
@@ -38,6 +39,7 @@ function Get-ServerStatus {
 
     begin {
         $sb = {
+            [OutputType([psobject])]
             param(
                 $volLetter
             )

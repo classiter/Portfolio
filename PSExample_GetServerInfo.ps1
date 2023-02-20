@@ -3,7 +3,7 @@ function Get-ServerInfo {
         .SYNOPSIS
         Gathers OS Details
         .DESCRIPTION
-        This function gathers generic OS information and returns the output as an array of objects
+        This function gathers generic OS information and returns the output as an array of objects.
         .EXAMPLE 
         Get-ServerInfo -computerList (server01, server02, server03)
         .EXAMPLE

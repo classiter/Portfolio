@@ -164,8 +164,8 @@ main() {
     }
 
     prune_backups
-    start_adguard_bak
     start_appdaemon_bak
+    start_adguard_bak
     start_mqtt_bak
     start_rtlamr2mqtt_bak
     start_homeassistant_bak
